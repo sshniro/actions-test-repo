@@ -13,4 +13,5 @@ jobs:
       run: echo Hello, world!
     - name: run zap
       uses: docker://owasp/zap2docker-stable
-      args: zap-baseline.py -t https://www.example.com
+      with:
+        args: zap-baseline.py -t https://www.example.com
