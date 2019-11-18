@@ -18,4 +18,4 @@ jobs:
     - name: run zap
       uses: docker://sshniro/zap_action
       with:
-        args: -u runner zap-baseline.py -t https://www.example.com
+        args: zap-baseline.py -t https://www.example.com
