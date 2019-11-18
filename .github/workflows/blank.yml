@@ -12,6 +12,6 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world!
     - name: run zap
-      uses: docker://owasp/zap2docker-stable
+      uses: docker://sshniro/zap_action
       with:
         args: zap-baseline.py -t https://www.example.com
