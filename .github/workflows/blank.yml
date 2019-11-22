@@ -7,7 +7,7 @@ jobs:
       image: owasp/zap2docker-stable
       options: --user root
       volumes:
-        - $(pwd):/zap/wrk/:rw
+        - /github/home/:/zap/wrk/
     steps:
       - uses: actions/checkout@v1
       - name: view file
