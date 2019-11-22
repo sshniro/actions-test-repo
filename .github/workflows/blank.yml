@@ -14,6 +14,7 @@ jobs:
         run: pwd
       - name: run zap
         if: always()
-        run: zap-baseline.py -t https://www.example.com
+        run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
       - name: view file
+        if: always()
         run: pwd
