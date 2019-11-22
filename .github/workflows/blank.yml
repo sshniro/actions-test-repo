@@ -6,11 +6,11 @@ jobs:
     container:
       image: owasp/zap2docker-stable
       options: --user root
-      volumes:
-        - $(pwd):/zap/wrk/
+#      volumes:
+#        - $(pwd):/zap/wrk/
     steps:
       - uses: actions/checkout@v1
       - name: run zap
         run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
       - name: view file
-        run: ls
+        run: echo hello
