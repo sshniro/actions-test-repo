@@ -10,7 +10,7 @@ jobs:
 #        - $(pwd):/zap/wrk/
     steps:
       - uses: actions/checkout@v1
+      - name: view file
+        run: pwd
       - name: run zap
         run: zap-baseline.py -t https://www.example.com
-      - name: view file
-        run: echo hello
