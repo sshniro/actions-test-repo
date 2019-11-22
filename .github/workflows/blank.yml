@@ -12,5 +12,5 @@ jobs:
       - uses: actions/checkout@v1
       - name: run zap
         run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
-      - names: view file
+      - name: view file
         run: ls
