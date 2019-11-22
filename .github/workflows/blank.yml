@@ -14,3 +14,5 @@ jobs:
         run: pwd
       - name: run zap
         run: zap-baseline.py -t https://www.example.com
+      - name: view file
+        run: pwd
