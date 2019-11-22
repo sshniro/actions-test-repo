@@ -6,8 +6,8 @@ jobs:
     container:
       image: owasp/zap2docker-stable
       options: --user root
-#      volumes:
-#        - $(pwd):/zap/wrk/
+      volumes:
+        - $(pwd):/zap/wrk/:rw
     steps:
       - uses: actions/checkout@v1
       - name: view file
