@@ -13,6 +13,7 @@ jobs:
       - name: view file
         run: pwd
       - name: run zap
+        if: always()
         run: zap-baseline.py -t https://www.example.com
       - name: view file
         run: pwd
