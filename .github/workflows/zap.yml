@@ -6,16 +6,9 @@ jobs:
     container:
       image: owasp/zap2docker-stable
       options: --user root
-      volumes:
-        - /home/runner/work/_temp/_github_home:/zap/wrk/
-        - /__w/actions-test-repo/actions-test-repo:/zap/wrk/
     steps:
       - uses: actions/checkout@v1
-      - name: view file
-        run: pwd
       - name: run zap
         if: always()
         run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
-      - name: view file
-        if: always()
-        run: pwd
+#       - name: Run any additional scripts to raise issues etc
