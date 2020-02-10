@@ -12,3 +12,6 @@ jobs:
         if: always()
         run: zap-baseline.py -t https://www.example.com
 #       - name: Run any additional scripts to raise issues etc
+      - name: view file
+        if: always()
+        run: pwd
