@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
-      options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw - /var/run/docker.sock:/var/run/docker.sock
+      options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v1
       - name: run zap baseline scal
