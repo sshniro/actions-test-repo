@@ -5,21 +5,21 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
-      options: --user root -v /__w/actions-test-repo:/zap/wrk/:rw
+      options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw
       volumes:
         - /__w/actions-test-repo/:/zap/wrk/
     steps:
       - uses: actions/checkout@v1
       - name: run zap
         if: always()
-        run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
+        run: zap-baseline.py -t https://www.example.com -g gen.conf -2 testreport.md
 #       - name: Run any additional scripts to raise issues etc
       - name: view file
         if: always()
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/actions-test-repo/
+        run: cd /__w/actions-test-repo/actions-test-repo/
       - name: ls
         if: always()
         run: ls
