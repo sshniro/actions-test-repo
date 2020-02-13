@@ -6,23 +6,20 @@ jobs:
     container:
       image: owasp/zap2docker-stable
       options: -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw
-      volumes:
-        - /__w/actions-test-repo/:/zap/wrk/
     steps:
       - uses: actions/checkout@v1
-      - name: run zap
+      - name: run zap baseline scal
         if: always()
-        run: zap-baseline.py -t https://www.example.com -g gen.conf -w testreport.md
-#       - name: Run any additional scripts to raise issues etc
-      - name: view file
+        run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
+      - name: check the present working dir
         if: always()
         run: pwd
       - name: nav
         if: always()
         run: cd /__w/actions-test-repo/actions-test-repo/
-      - name: ls
+      - name: list all the files in the directory
         if: always()
         run: ls
-      - name: read
+      - name: read zap output file
         if: always()
         run: cat zap.out
