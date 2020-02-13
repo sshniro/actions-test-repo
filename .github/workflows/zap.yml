@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
-      options: --user root -v /__w/actions-test-repo/:/zap/wrk/
+      options: --user root -v /__w/actions-test-repo/actions-test-repo/:/zap/wrk/
       volumes:
         - /__w/actions-test-repo/:/zap/wrk/
     steps:
@@ -19,7 +19,7 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/actions-test-repo/
+        run: cd /__w/actions-test-repo/actions-test-repo/
       - name: ls
         if: always()
         run: ls
