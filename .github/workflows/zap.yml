@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
-      options: --user root
+      options: --user root -v /__w/actions-test-repo/:/zap/wrk/
       volumes:
         - /__w/actions-test-repo/:/zap/wrk/
     steps:
