@@ -19,7 +19,7 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /home/runner/work/_temp/_github_home
+        run: cd /__w/actions-test-repo/
       - name: ls
         if: always()
         run: ls
