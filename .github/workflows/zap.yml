@@ -8,6 +8,7 @@ jobs:
       options: --user root
       volumes:
         - /__w/actions-test-repo/:/zap/wrk/
+        - /zap/wrk/
     steps:
       - uses: actions/checkout@v1
       - name: run zap
