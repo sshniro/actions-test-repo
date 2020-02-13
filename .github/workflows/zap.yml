@@ -7,7 +7,7 @@ jobs:
       image: owasp/zap2docker-stable
       options: --user root
       volumes:
-        - /test/:/zap/wrk/
+        - /__w/actions-test-repo/:/zap/wrk/
     steps:
       - uses: actions/checkout@v1
       - name: run zap
