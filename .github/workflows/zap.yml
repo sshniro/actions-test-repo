@@ -19,7 +19,7 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/actions-test-repo/actions-test-repo/
+        run: cd /home/runner/work/actions-test-repo/actions-test-repo/
       - name: ls
         if: always()
         run: ls
