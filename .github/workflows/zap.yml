@@ -16,7 +16,7 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/actions-test-repo/actions-test-repo/ /home/runner/work/_temp/_github_home
+        run: cd /__w/actions-test-repo/actions-test-repo/
       - name: list all the files in the directory
         if: always()
         run: ls
@@ -25,7 +25,7 @@ jobs:
         run: cat zap.out
       - name: nav
         if: always()
-        run: cd /home/runner/work/_temp/_github_home
+        run: cd /github/home
       - name: list all the files in the directory
         if: always()
         run: ls
