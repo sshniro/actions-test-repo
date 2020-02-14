@@ -8,21 +8,15 @@ jobs:
       options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v1
-      - name: run zap baseline scal
+      - name: run zap baseline scan
         if: always()
         run: zap-baseline.py -t https://www.example.com -g gen.conf -x report_xml.xml
-      - name: check the present working dir
+      - name: check the present working dir and read the zap log file
         if: always()
-        run: pwd && ls
-      - name: nav
-        if: always()
-        run: cd /__w/ && ls
-      - name: list all the files in the directory
-        if: always()
-        run: ls
-      - name: read zap output file
-        if: always()
-        run: cat zap.out
-      - name: nav
+        run: pwd && ls && cat zap.out
+      - name: read the xml file
         if: always()
         run: cd /github/home && ls && cat report_xml.xml
+      - name: ls the roon folder
+        if: always()
+        run: cd /__w/ && ls
