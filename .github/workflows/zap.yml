@@ -10,10 +10,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: run zap baseline scal
         if: always()
-        run: zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html
+        run: zap-baseline.py -t https://www.example.com -g gen.conf -x report_xml.xml
       - name: check the present working dir
         if: always()
-        run: pwd
+        run: pwd && ls
       - name: nav
         if: always()
         run: cd /__w/ && ls
@@ -28,4 +28,4 @@ jobs:
         run: cd /github/home && ls
       - name: list all the files in the directory
         if: always()
-        run: ls
+        run: cat report_xml.xml
