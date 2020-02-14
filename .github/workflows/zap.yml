@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: owasp/zap2docker-stable
+      image: sshniro/zap_action
       options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v1
