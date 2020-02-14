@@ -16,10 +16,16 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/actions-test-repo/actions-test-repo/
+        run: cd /__w/actions-test-repo/actions-test-repo/ /home/runner/work/_temp/_github_home
       - name: list all the files in the directory
         if: always()
         run: ls
       - name: read zap output file
         if: always()
         run: cat zap.out
+      - name: nav
+        if: always()
+        run: cd /home/runner/work/_temp/_github_home
+      - name: list all the files in the directory
+        if: always()
+        run: ls
