@@ -25,7 +25,4 @@ jobs:
         run: cat zap.out
       - name: nav
         if: always()
-        run: cd /github/home && ls
-      - name: list all the files in the directory
-        if: always()
-        run: cat report_xml.xml
+        run: cd /github/home && ls && cat report_xml.xml
