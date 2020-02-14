@@ -16,7 +16,7 @@ jobs:
         run: pwd
       - name: nav
         if: always()
-        run: cd /__w/
+        run: cd /__w/ && ls
       - name: list all the files in the directory
         if: always()
         run: ls
