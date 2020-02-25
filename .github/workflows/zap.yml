@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: run zap baseline scan
         if: always()
-        run: zap-baseline.py -t https://www.zaproxy.org -x report_xml.xml -c test.txt
+        run: zap-baseline.py -t https://www.zaproxy.org -x report_xml.xml -c .github/workflows/rules.tsv
       - name: check the present working dir and read the zap log file
         if: always()
         run: pwd && ls && cat zap.out
