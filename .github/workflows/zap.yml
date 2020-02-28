@@ -5,12 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: sshniro/zap_action
-      options: --user root -v /__w/actions-test-repo/actions-test-repo:/zap/wrk:rw -v /var/run/docker.sock:/var/run/docker.sock
+      options: -v ${{ github.workspace }}:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v1
       - name: run zap baseline scan
         if: always()
-        run: zap-baseline.py -t https://www.zaproxy.org -x report_xml.xml -c rules.tsv -k /__w/actions-test-repo/actions-test-repo/.github/workflows/ -q /github/home/ 
+        run: zap-baseline.py -t https://www.zaproxy.org -x report_xml.xml 
       - name: check the present working dir and read the zap log file
         if: always()
         run: pwd && ls && cat zap.out
