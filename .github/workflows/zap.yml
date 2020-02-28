@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: sshniro/zap_action
-      options: -v ${{ github.workspace }}:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
+      options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v1
       - name: run zap baseline scan
