@@ -1,22 +1,13 @@
 name: ZAP
 on: push
 jobs:
-  build:
+  scan:
     runs-on: ubuntu-latest
     container:
-      image: sshniro/zap_action
-      options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw -v /var/run/docker.sock:/var/run/docker.sock
+      image: owasp/zap2docker-stable
+      options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw
     steps:
-      - uses: actions/checkout@v1
+      - run: pwd && ls -l
       - name: run zap baseline scan
-        if: always()
-        run: zap-baseline.py -t https://www.zaproxy.org -x report_xml.xml 
-      - name: check the present working dir and read the zap log file
-        if: always()
-        run: pwd && ls && cat zap.out
-      - name: read the xml file
-        if: always()
-        run: cd /github/home && ls && cat report_xml.xml
-      - name: ls the roon folder
-        if: always()
-        run: cd /__w/ && ls
+        run: zap-baseline.py -t https://example.com -x report_xml.xml || echo 0
+      - run: pwd && ls -l /zap/wrk/
