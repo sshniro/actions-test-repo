@@ -45,7 +45,6 @@
 import os
 
 import github3
-import yaml
 
 
 def zap_started(zap, target):
