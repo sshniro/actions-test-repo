@@ -12,3 +12,4 @@ jobs:
         run: zap-baseline.py -t https://example.com -x report_xml.xml  || echo 0
       - run: pwd && ls -l /zap/wrk/
       - run: cat /zap/wrk/report_xml.xml
+      - uses: actions/checkout@v1  
