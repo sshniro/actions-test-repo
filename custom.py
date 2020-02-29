@@ -43,7 +43,7 @@
 # at the end of each line.
 
 import os
-
+from zapv2 import ZAPv2
 import github3
 
 
