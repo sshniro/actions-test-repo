@@ -7,6 +7,7 @@ jobs:
       image: owasp/zap2docker-stable
       options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw
     steps:
+      - uses: actions/checkout@v1
       - run: pwd && ls -l
       - run: pip3 install --upgrade pip github3.py
       - name: run zap baseline scan
