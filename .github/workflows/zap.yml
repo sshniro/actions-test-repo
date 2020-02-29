@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
+      - run: pip install --upgrade pip github3.py
       - name: run zap baseline scan
-        run: zap-baseline.py -t https://example.com -x report_xml.xml  || echo 0
+        run: zap-baseline.py -t https://example.com -x report_xml.xml --hook=/zap/wrk/custom.py || echo 0
       - run: pwd && ls -l /zap/wrk/
       - run: cat /zap/wrk/report_xml.xml
