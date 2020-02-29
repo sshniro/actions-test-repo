@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
+      - run: pip install --upgrade pip github3.py
       - run: pip3 install --upgrade pip github3.py
       - run: python3 custom.py
       - run: echo $PYTHONPATH  
