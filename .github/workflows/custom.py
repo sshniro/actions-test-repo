@@ -43,11 +43,9 @@
 # at the end of each line.
 
 import os
-from zapv2 import ZAPv2
-import github3
 
 
 def zap_started(zap, target):
-    print("hello world by niro custom hook")
-    print('token is' + os.environ['GITHUB_TOKEN'])
-    print('repo is' + os.environ['GITHUB_REPOSITORY'])
+    print("hello world by niro")
+    print(zap)
+
