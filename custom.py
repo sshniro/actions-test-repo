@@ -50,7 +50,7 @@ import github3
 def zap_started():
     print("hello world by niro custom hook")
     print('token is' + os.environ['GITHUB_TOKEN'])
-    print('repo is' + os.environ['GITHUB_REPOSITORY'])
+    # print('repo is' + os.environ['GITHUB_REPOSITORY'])
 
 
 zap_started()
