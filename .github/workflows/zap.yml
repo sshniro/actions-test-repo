@@ -10,8 +10,9 @@ jobs:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
       - run: pip install --upgrade pip github3.py
-      - run: pip3 install --upgrade pip github3.py
-      - env:
+      - name: install python  
+        run: pip3 install --upgrade pip github3.py
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: python3 /zap/wrk/custom.py
       - name: run zap baseline scan
