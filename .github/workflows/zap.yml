@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
-      options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw
+      options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw -e GITHUB_ACTIONS=${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
