@@ -6,9 +6,7 @@ on:
 jobs:
 
   scan:
-    runs:
-      using: "docker"
-      image: "Dockerfile"
+    runs-on: ubuntu-latest
     container:
       image: owasp/zap2docker-stable
       options: --user root -v ${{ github.workspace }}:/zap/wrk/:rw
