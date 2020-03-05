@@ -12,7 +12,7 @@ jobs:
       - run: pip install --upgrade pip PyGithub pyyaml deepdiff
       - run: pip3 install --upgrade pip PyGithub pyyaml deepdiff
       - name: run custom script
-        run: python3 /zap/wrk/custom.py
+        run: python /zap/wrk/custom.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           YAML_FILE_NAME: zap_report.yaml
