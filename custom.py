@@ -105,7 +105,7 @@ with open(g_config_file_dir + 'report.json', 'r', errors='replace') as f:
         exit(0)
 
 # Fetch the YAML file from the repository
-with open(g_config_file_dir + yaml_file_name, 'r', errors='replace') as stream:
+with open(g_config_file_dir + yaml_file_name, errors='replace') as stream:
     try:
         yaml_config = yaml.safe_load(stream)
         if not yaml_config:
