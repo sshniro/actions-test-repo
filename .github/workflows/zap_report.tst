@@ -2,7 +2,7 @@ alert_list:
 - instances:
   - evidence: 'Access-Control-Allow-Origin: *'
     method: GET
-    uri: https://www.zaproxy.org/img/faq/supportAddonVersion.png
+    uri: https://www.zaproxy.org/img/faq/supportAddonVersion.jpeg
   - evidence: 'Access-Control-Allow-Origin: *'
     method: GET
     uri: https://www.zaproxy.org/getting-started/images/browser-no-proxy.png
