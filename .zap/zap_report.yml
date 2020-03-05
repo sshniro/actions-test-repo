@@ -1,6 +1,7 @@
 alert_list:
 - instances:
-  - evidence: 'Access-Control-Allow-Origin: *'
+  - &id001
+    evidence: 'Access-Control-Allow-Origin: *'
     method: GET
     uri: https://www.zaproxy.org/img/faq/supportAddonVersion.jpeg
   - evidence: 'Access-Control-Allow-Origin: *'
@@ -60,6 +61,13 @@ alert_list:
   - evidence: 'Access-Control-Allow-Origin: *'
     method: GET
     uri: https://www.zaproxy.org/docs/desktop/images/16/152.png
+  iterable_item_added:
+    root[0]: *id001
+  iterable_item_removed:
+    root[0]:
+      evidence: 'Access-Control-Allow-Origin: *'
+      method: GET
+      uri: https://www.zaproxy.org/img/faq/supportAddonVersion.png
   name: Cross-Domain Misconfiguration
   pluginid: '10098'
   riskdesc: Medium (Medium)
