@@ -15,7 +15,7 @@ jobs:
       - run: pip install --upgrade pip PyGithub pyyaml deepdiff
       - run: pip3 install --upgrade pip PyGithub pyyaml deepdiff
       - name: run zap baseline scan
-        run: zap-baseline.py -t https://example.com -J report_json --hook=/zap/wrk/.github/workflows/custom.py || echo 0
+        run: zap-baseline.py -t https://example.com -J report_json.json --hook=/zap/wrk/.github/workflows/custom.py || echo 0
       - run: pwd && ls -l /zap/wrk/
       - name: run custom script
         run: python3 /zap/wrk/custom.py
