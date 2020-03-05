@@ -1,5 +1,8 @@
 name: ZAP
-on: push
+on:
+  push:
+    paths-ignore:
+      - '.zap/**'
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
         run: python3 /zap/wrk/custom.py
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          YAML_FILE_NAME: zap_report.tst
+          YAML_FILE_NAME: zap_report.yml
           WORKING_BRANCH: master
       - name: run zap baseline scan
         run: zap-baseline.py -t https://example.com -x report_xml.xml --hook=/zap/wrk/.github/workflows/custom.py || echo 0

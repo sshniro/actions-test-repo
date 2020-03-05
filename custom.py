@@ -23,7 +23,7 @@ new_alerts = []
 updated_alerts = []
 existing_alerts = []
 
-g_config_file_dir = '.github/workflows/'
+g_config_file_dir = '.zap/'
 yaml_file_name = os.environ['YAML_FILE_NAME']
 working_branch = os.environ['WORKING_BRANCH']
 
