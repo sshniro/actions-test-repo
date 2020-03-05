@@ -100,7 +100,7 @@ print (os.listdir(g_config_file_dir))
 with open(g_config_file_dir + 'report.json', 'r',errors='replace') as f:
     print('opening report json file')
     try:
-        print(f.readlines())
+        # print(f.readlines())
         print('printed the lines')
         report_data = json.load(f)
         print('successfully read the report json file')
