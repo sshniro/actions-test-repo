@@ -11,8 +11,10 @@ jobs:
       - run: pwd && ls -l
       - run: pip install --upgrade pip PyGithub pyyaml deepdiff
       - run: pip3 install --upgrade pip PyGithub pyyaml deepdiff
+      - run: cat .github/workflows/report.json
+      - run: cat /zap/wrk/.github/workflows/report.json
       - name: run custom script
-        run: python /zap/wrk/custom.py
+        run: python3 /zap/wrk/custom.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           YAML_FILE_NAME: zap_report.yaml
