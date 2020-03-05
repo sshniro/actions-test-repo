@@ -99,6 +99,8 @@ def get_g_file(dir_name, file_name, branch):
 with open(g_config_file_dir + 'report.json') as f:
     print('opening report json file')
     try:
+        print(f.readlines())
+        print('printed the lines')
         report_data = json.load(f)
         print('successfully read the report json file')
         # If no errors found in the report exit
@@ -113,7 +115,7 @@ with open(g_config_file_dir + 'report.json') as f:
         exit(0)
 
 # Fetch the YAML file from the repository
-with open(yaml_file_name) as stream:
+with open(g_config_file_dir + yaml_file_name) as stream:
     print('opening zap yaml file')
     try:
         yaml_config = yaml.safe_load(stream)
