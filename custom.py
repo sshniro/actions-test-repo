@@ -24,7 +24,7 @@ updatedAlerts = []
 existingAlerts = []
 
 g_config_file_dir = '.github/workflows/'
-yaml_file_name = os.environ['INPUT_YAML_FILE_NAME']
+yaml_file_name = os.environ['YAML_FILE_NAME']
 working_branch = os.environ['INPUT_WORKING_BRANCH']
 
 create_new_issue = False
