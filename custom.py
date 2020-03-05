@@ -105,29 +105,25 @@ with open(g_config_file_dir + 'report.json', 'r', errors='replace') as f:
         exit(0)
 
 # Fetch the YAML file from the repository
-with open(g_config_file_dir + yaml_file_name, errors='replace') as stream:
-    try:
-        yaml_config = yaml.safe_load(stream)
-        if not yaml_config:
-            create_new_issue = True
-            print('yaml config not found')
-        # If last issue is closed create a new issue
-        if yaml_config:
-            issue = repo.get_issue(number=yaml_config['issue'])
-            print('obtained the issue number for yaml file')
-            if issue.state == 'closed':
+# Fetch the YAML file from the repository
+try:
+    with open(g_config_file_dir + yaml_file_name, errors='replace') as stream:
+        try:
+            yaml_config = yaml.safe_load(stream)
+            if not yaml_config:
                 create_new_issue = True
-                print('issue is closed')
-    except IOError as exc:
-        print('zap report does not exists', exc)
-        create_new_issue = True
-    except OSError as exc:
-        print('zap report does not exists', exc)
-        create_new_issue = True
-    except yaml.YAMLError as exc:
-        print('invalid YAML syntax, creating a new file and issue', exc)
-        create_new_issue = True
-        print(exc)
+            # If last issue is closed create a new issue
+            if yaml_config:
+                issue = repo.get_issue(number=yaml_config['issue'])
+                if issue.state == 'closed':
+                    create_new_issue = True
+        except yaml.YAMLError as exc:
+            print('invalid YAML syntax, creating a new file and issue', exc)
+            create_new_issue = True
+            print(exc)
+except IOError as exc:
+    print('zap report does not exists', exc)
+    create_new_issue = True
 
 
 def update_g_file(file_path, msg, content, branch, sha):
