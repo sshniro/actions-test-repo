@@ -121,7 +121,7 @@ with open(g_config_file_dir + yaml_file_name, 'r', errors='replace') as stream:
     except IOError as exc:
         print('zap report does not exists', exc)
         create_new_issue = True
-    except FileNotFoundError as exc:
+    except OSError as exc:
         print('zap report does not exists', exc)
         create_new_issue = True
     except yaml.YAMLError as exc:
