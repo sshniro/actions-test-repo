@@ -136,7 +136,7 @@ def create_g_file(file_path, msg, content, branch):
                      branch=branch)
 
 
-print('read the json and report file' + create_new_issue)
+print('read the json and report file')
 # Create a new zap file and issue
 if create_new_issue:
     print('came to generate new report')
