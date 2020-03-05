@@ -5,6 +5,7 @@ from github import Github
 import json
 import yaml
 from deepdiff import DeepDiff
+import copy
 
 GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
 GITHUB_REPOSITORY = os.environ['GITHUB_REPOSITORY']
@@ -21,6 +22,7 @@ zap_config_file = {}
 
 new_alerts = []
 updated_alerts = []
+updated_alerts_copy = []
 existing_alerts = []
 
 g_config_file_dir = '.zap/'
@@ -163,6 +165,7 @@ for r_alert in report_data['site'][0]['alerts']:
     p_alert = [element for element in previous_alert_list if element['pluginid'] == r_alert['pluginid']]
     if p_alert:
         p_alert = p_alert[0]
+        p_alert_1 = copy.deepcopy(p_alert[0])
         diff = DeepDiff(r_alert['instances'], p_alert['instances'], ignore_order=True)
         if not diff:
             existing_alerts.append(p_alert)
@@ -173,6 +176,7 @@ for r_alert in report_data['site'][0]['alerts']:
             p_alert['iterable_item_added'] = diff['iterable_item_added']
         if 'iterable_item_removed' in diff or 'iterable_item_added' in diff:
             updated_alerts.append(p_alert)
+            updated_alerts_copy.append(p_alert_1)
     else:
         new_alerts.append(r_alert)
 
@@ -183,7 +187,7 @@ if new_alerts or (updated_alerts and update_issue_if_alert_resolved):
     g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     yaml_file = {'issue': issue.number, 'alert_list': []}
     yaml_file['alert_list'].append(new_alerts)
-    yaml_file['alert_list'].append(updated_alerts)
+    yaml_file['alert_list'].append(updated_alerts_copy)
     r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
     if g_config_file:
         g_config_file = g_config_file[0]
