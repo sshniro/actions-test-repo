@@ -20,8 +20,8 @@ report_data = {}
 zap_config_file = {}
 
 new_alerts = []
-updatedAlerts = []
-existingAlerts = []
+updated_alerts = []
+existing_alerts = []
 
 g_config_file_dir = '.github/workflows/'
 yaml_file_name = os.environ['YAML_FILE_NAME']
@@ -48,24 +48,21 @@ def g_load_zap_yaml_file():
         exit(0)
 
 
-def generate_basic__alert_msg(site_list, alert_list, updated_list):
+def generate_basic__alert_msg(alert_list, updated_list):
     msg = 'The following new violations have been found during the ZAP scan' + NXT_LINE
-    for site in site_list:
-        for alert in site['alert']:
-            msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
-                                                               alert['name'], NXT_LINE)
+    for alert in alert_list:
+        msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
+                                                           alert['name'], NXT_LINE)
 
-        for alert in updated_list:
-            msg = msg + NXT_LINE + "The following alerts have been updated with the new ZAP Scan" + NXT_LINE
-            msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
-                                                               alert['name'], NXT_LINE)
-            if 'iterable_item_added' in alert:
-                msg = msg + '{}{} Newly identified Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_added']),
-                                                                         NXT_LINE)
-            if update_issue_if_alert_resolved and 'iterable_item_removed' in alert:
-                msg = msg + '{}{} Resolved Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_removed']),
-                                                                 NXT_LINE)
-
+    for alert in updated_list:
+        msg = msg + NXT_LINE + "The following alerts have been updated with the new ZAP Scan" + NXT_LINE
+        msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
+                                                           alert['name'], NXT_LINE)
+        if 'iterable_item_added' in alert:
+            msg = msg + '{}{} Newly identified Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_added']),
+                                                                     NXT_LINE)
+        if update_issue_if_alert_resolved and 'iterable_item_removed' in alert:
+            msg = msg + '{}{} Resolved Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_removed']), NXT_LINE)
     repo = "https://github.com/" + GITHUB_REPOSITORY + '/blob/' + working_branch + '/' + g_config_file_dir + yaml_file_name
     return msg + NXT_LINE + 'View the following following [file]({}) for complete report.'.format(repo)
 
@@ -79,15 +76,12 @@ def create_zap_yaml_file(yaml_file_name, data):
         yaml.dump(data, yaml_file, default_flow_style=False)
 
 
-def filter_report_json_data(site_list):
-    f_site_list = []
-    for site in site_list:
-        alert_list = []
-        for alert in site:
-            alert_list.append(dict((key, value) for key, value in alert.items() if
-                                   key in ('pluginid', 'name', 'riskdesc', 'instances')))
-        site_list.append(alert_list)
-    return f_site_list
+def filter_report_json_data(alert_list):
+    f_list = []
+    for alert in alert_list:
+        f_list.append(
+            dict((key, value) for key, value in alert.items() if key in ('pluginid', 'name', 'riskdesc', 'instances')))
+    return f_list
 
 
 def get_g_file(dir_name, file_name, branch):
@@ -96,14 +90,9 @@ def get_g_file(dir_name, file_name, branch):
 
 
 # Fetch the auto generated report from ZAP
-print (os.listdir(g_config_file_dir))
-with open(g_config_file_dir + 'report.json', 'r',errors='replace') as f:
-    print('opening report json file')
+with open(g_config_file_dir + 'report.json', 'r', errors='replace') as f:
     try:
-        # print(f.readlines())
-        print('printed the lines')
         report_data = json.load(f)
-        print('successfully read the report json file')
         # If no errors found in the report exit
         if len(report_data['site'][0]['alerts']) == 0:
             print('No errors found via the ZAP Scan')
@@ -116,8 +105,7 @@ with open(g_config_file_dir + 'report.json', 'r',errors='replace') as f:
         exit(0)
 
 # Fetch the YAML file from the repository
-with open(g_config_file_dir + yaml_file_name) as stream:
-    print('opening zap yaml file')
+with open(g_config_file_dir + yaml_file_name, 'r', errors='replace') as stream:
     try:
         yaml_config = yaml.safe_load(stream)
         if not yaml_config:
@@ -145,21 +133,25 @@ def create_g_file(file_path, msg, content, branch):
     repo.create_file(file_path, msg, content,
                      branch=branch)
 
-
+print('read the json and report file')
 # Create a new zap file and issue
 if create_new_issue:
-    r_sites = filter_report_json_data(report_data['site'])
-    msg = generate_basic__alert_msg(r_sites, [])
+    print('came to generate new report')
+    r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
+    msg = generate_basic__alert_msg(r_alerts, [])
     issue = create_issue('ZAP Scan Baseline Report', msg)
+    print('issue has been created')
     yaml_file = {'issue': issue.number, 'alert_list': r_alerts}
     # TODO Remove after testing
-    create_zap_yaml_file(yaml_file_name, yaml_file)
+    create_zap_yaml_file(g_config_file_dir + yaml_file_name, yaml_file)
 
     g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     if g_config_file:
+        print('updating the issue')
         update_g_file(g_config_file[0].path, "Updating ZAP report", yaml.dump(yaml_file), working_branch,
                       g_config_file[0].sha)
     else:
+        print('creating an issue')
         create_g_file(g_config_file_dir + yaml_file_name, "Creating the ZAP report", yaml.dump(yaml_file),
                       working_branch)
     print('zap process completed successfully!')
@@ -190,13 +182,15 @@ if new_alerts or (updated_alerts and update_issue_if_alert_resolved):
 
     g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     yaml_file = {'issue': issue.number, 'alert_list': []}
+    yaml_file['alert_list'].append(new_alerts)
+    yaml_file['alert_list'].append(updated_alerts)
     r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
     if g_config_file:
         g_config_file = g_config_file[0]
-        repo.update_file(g_config_file.path, "Updating ZAP report", yaml.dump(r_alerts), g_config_file.sha,
+        repo.update_file(g_config_file.path, "Updating ZAP report", yaml.dump(yaml_config), g_config_file.sha,
                          branch=working_branch)
     else:
-        repo.create_file(g_config_file_dir + yaml_file_name, "creating the zap report", yaml.dump(r_alerts),
+        repo.create_file(g_config_file_dir + yaml_file_name, "creating the zap report", yaml.dump(yaml_config),
                          branch=working_branch)
     print("process completed!")
     exit(0)
