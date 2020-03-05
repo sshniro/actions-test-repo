@@ -147,8 +147,12 @@ if create_new_issue:
     yaml_file = {'issue': issue.number, 'alert_list': r_alerts}
     # TODO Remove after testing
     # create_zap_yaml_file(g_config_file_dir + yaml_file_name, yaml_file)
+    g_config_file = {}
+    try:
+        g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
+    except github.GithubException as err:
+        print('The file does not exists, creating a new file')
 
-    g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     if g_config_file:
         update_g_file(g_config_file[0].path, "Updating ZAP report", yaml.dump(yaml_file), working_branch,
                       g_config_file[0].sha)
