@@ -19,10 +19,10 @@ jobs:
       - name: run zap baseline scan
         run: zap-baseline.py -t https://example.com -J report_json --hook=/zap/wrk/.github/workflows/custom.py || echo 0
       - name: run custom script
-          run: python3 /zap/wrk/custom.py
-          env:
-            GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-            YAML_FILE_NAME: zap_report.yml
-            WORKING_BRANCH: master
+        run: python3 /zap/wrk/custom.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          YAML_FILE_NAME: zap_report.yml
+          WORKING_BRANCH: master
       - run: pwd && ls -l /zap/wrk/
       - run: cat /zap/wrk/report_json.json
