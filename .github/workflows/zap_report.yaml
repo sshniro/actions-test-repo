@@ -255,4 +255,4 @@ alert_list:
   name: Timestamp Disclosure - Unix
   pluginid: '10096'
   riskdesc: Informational (Low)
-issue: 21
+issue: 22
