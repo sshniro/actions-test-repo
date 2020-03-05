@@ -96,6 +96,7 @@ def get_g_file(dir_name, file_name, branch):
 
 
 # Fetch the auto generated report from ZAP
+print (os.listdir(g_config_file_dir))
 with open(g_config_file_dir + 'report.json') as f:
     print('opening report json file')
     try:
