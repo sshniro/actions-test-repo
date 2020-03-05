@@ -16,7 +16,7 @@ jobs:
       - name: run custom script
         run: python3 /zap/wrk/custom.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           YAML_FILE_NAME: zap_report.yaml
           WORKING_BRANCH: master
       - name: run zap baseline scan
