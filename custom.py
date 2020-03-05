@@ -92,7 +92,7 @@ def get_g_file(dir_name, file_name, branch):
 
 
 # Fetch the auto generated report from ZAP
-with open('/zap/wrk/' + 'report_json.json', 'r', errors='replace') as f:
+with open('report_json.json', 'r', errors='replace') as f:
     try:
         report_data = json.load(f)
         # If no errors found in the report exit
