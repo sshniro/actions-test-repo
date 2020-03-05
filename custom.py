@@ -146,7 +146,7 @@ if create_new_issue:
     issue = create_issue('ZAP Scan Baseline Report', msg)
     yaml_file = {'issue': issue.number, 'alert_list': r_alerts}
     # TODO Remove after testing
-    create_zap_yaml_file(g_config_file_dir + yaml_file_name, yaml_file)
+    # create_zap_yaml_file(g_config_file_dir + yaml_file_name, yaml_file)
 
     g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     if g_config_file:
