@@ -72,46 +72,100 @@ alert_list:
   pluginid: '10098'
   riskdesc: Medium (Medium)
 - instances:
-  - method: GET
+  - &id002
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/port-scan/tab/
-  - method: GET
+  - &id013
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/start/features/alerts/
-  - method: GET
+  - &id014
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/revisit/
-  - method: GET
+  - &id015
+    method: GET
     uri: https://www.zaproxy.org/faq/why-dont-you-rewrite-zap-in-my-favorite-language/
-  - method: GET
+  - &id016
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/token-generator/
-  - method: GET
+  - &id017
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/ui/tabs/callbacks/
-  - method: GET
+  - &id018
+    method: GET
     uri: https://www.zaproxy.org/faq/how-can-i-use-the-zap-api-in-my-own-regression-tests/
-  - method: GET
+  - &id019
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/releases/2.6.0/
-  - method: GET
+  - &id020
+    method: GET
     uri: https://www.zaproxy.org/faq/where-can-i-ask-zap-related-questions/
-  - method: GET
+  - &id021
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/ui/dialogs/options/anticsrf/
-  - method: GET
+  - &id003
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/python-scripting/
-  - method: GET
+  - &id004
+    method: GET
     uri: https://www.zaproxy.org/faq/why-am-i-getting-blank-zap-windows-on-linux/
-  - method: GET
+  - &id005
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/windows-webdrivers/
-  - method: GET
+  - &id006
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/vulncheck/
-  - method: GET
+  - &id007
+    method: GET
     uri: https://www.zaproxy.org/faq/what-should-i-do-if-zap-doesn-t-detect-a-known-problem/
-  - method: GET
+  - &id008
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/ui/dialogs/addalert/
-  - method: GET
+  - &id009
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/ui/dialogs/options/keyboard/
-  - method: GET
+  - &id010
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/forced-browse/
-  - method: GET
+  - &id011
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/addons/log-file-importer/
-  - method: GET
+  - &id012
+    method: GET
     uri: https://www.zaproxy.org/docs/desktop/ui/tabs/response/
+  iterable_item_added:
+    root[0]: *id002
+    root[10]: *id003
+    root[11]: *id004
+    root[12]: *id005
+    root[13]: *id006
+    root[14]: *id007
+    root[15]: *id008
+    root[16]: *id009
+    root[17]: *id010
+    root[18]: *id011
+    root[19]: *id012
+    root[1]: *id013
+    root[2]: *id014
+    root[3]: *id015
+    root[4]: *id016
+    root[5]: *id017
+    root[6]: *id018
+    root[7]: *id019
+    root[8]: *id020
+    root[9]: *id021
+  iterable_item_removed:
+    root[0]:
+      method: GET
+      uri: https://example.com/
+    root[1]:
+      method: GET
+      uri: https://example.com
+    root[2]:
+      method: GET
+      uri: https://example.com/robots.txt
+    root[3]:
+      method: GET
+      uri: https://example.com/sitemap.xml
   name: Content Security Policy (CSP) Header Not Set
   pluginid: '10038'
   riskdesc: Low (Medium)
