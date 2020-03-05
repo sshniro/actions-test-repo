@@ -110,11 +110,14 @@ with open(g_config_file_dir + yaml_file_name, 'r', errors='replace') as stream:
         yaml_config = yaml.safe_load(stream)
         if not yaml_config:
             create_new_issue = True
+            print('yaml config not found')
         # If last issue is closed create a new issue
         if yaml_config:
             issue = repo.get_issue(number=yaml_config['issue'])
+            print('obtained the issue number for yaml file')
             if issue.state == 'closed':
                 create_new_issue = True
+                print('issue is closed')
     except IOError as exc:
         print('zap report does not exists', exc)
         create_new_issue = True
@@ -133,7 +136,8 @@ def create_g_file(file_path, msg, content, branch):
     repo.create_file(file_path, msg, content,
                      branch=branch)
 
-print('read the json and report file')
+
+print('read the json and report file' + create_new_issue)
 # Create a new zap file and issue
 if create_new_issue:
     print('came to generate new report')
