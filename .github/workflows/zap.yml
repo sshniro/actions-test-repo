@@ -9,8 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
-      - run: pip install --upgrade pip PyGithub
-      - run: pip3 install --upgrade pip PyGithub
+      - run: pip install --upgrade pip PyGithub pyyaml deepdiff
+      - run: pip3 install --upgrade pip PyGithub pyyaml deepdiff
       - name: run custom script
         run: python3 /zap/wrk/custom.py
         env:
