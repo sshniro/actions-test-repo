@@ -147,11 +147,11 @@ if create_new_issue:
 
     g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
     if g_config_file:
-        print('updating the issue')
+        print('updating the file')
         update_g_file(g_config_file[0].path, "Updating ZAP report", yaml.dump(yaml_file), working_branch,
                       g_config_file[0].sha)
     else:
-        print('creating an issue')
+        print('creating an file')
         create_g_file(g_config_file_dir + yaml_file_name, "Creating the ZAP report", yaml.dump(yaml_file),
                       working_branch)
     print('zap process completed successfully!')
