@@ -1,56 +1,200 @@
 #!/usr/bin/env python
-# Zed Attack Proxy (ZAP) and its related class files.
-#
-# ZAP is an HTTP/HTTPS proxy for assessing web application security.
-#
-# Copyright 2016 ZAP Development Team
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# This script runs a baseline scan against a target URL using ZAP
-#
-# It can either be run 'standalone', in which case depends on
-# https://pypi.python.org/pypi/python-owasp-zap-v2.4 and Docker, or it can be run
-# inside one of the ZAP docker containers. It automatically detects if it is
-# running in docker so the parameters are the same.
-#
-# By default it will spider the target URL for one minute, but you can change
-# that via the -m parameter.
-# It will then wait for the passive scanning to finish - how long that takes
-# depends on the number of pages found.
-# It will exit with codes of:
-#	0:	Success
-#	1:	At least 1 FAIL
-#	2:	At least one WARN and no FAILs
-#	3:	Any other failure
-# By default all alerts found by ZAP will be treated as WARNings.
-# You can use the -c or -u parameters to specify a configuration file to override
-# this.
-# You can generate a template configuration file using the -g parameter. You will
-# then need to change 'WARN' to 'FAIL', 'INFO' or 'IGNORE' for the rules you want
-# to be handled differently.
-# You can also add your own messages for the rules by appending them after a tab
-# at the end of each line.
-
 import os
-from zapv2 import ZAPv2
-import github3
+import github
+from github import Github
+import json
+import yaml
+from deepdiff import DeepDiff
+
+GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+GITHUB_REPOSITORY = os.environ['GITHUB_REPOSITORY']
+
+print('github token is' + GITHUB_TOKEN)
+print('github repo is' + GITHUB_REPOSITORY)
+
+new_alerts_identified = False
+update_issue_if_alert_resolved = True
+issue_resolved = False
+
+report_data = {}
+zap_config_file = {}
+
+new_alerts = []
+updatedAlerts = []
+existingAlerts = []
+
+g_config_file_dir = '.github/workflows/'
+yaml_file_name = os.environ['INPUT_YAML_FILE_NAME']
+working_branch = os.environ['INPUT_WORKING_BRANCH']
+
+create_new_issue = False
+NXT_LINE = '\n'
+TAB = "\t"
+BULLET = "-"
+msg = ''
+
+# Github Configurations
+g = Github(GITHUB_TOKEN)
+repo = g.get_repo(GITHUB_REPOSITORY)
+issue = ''
+
+print('came to the end of the file')
+exit(0)
+
+def g_load_zap_yaml_file():
+    try:
+        contents = repo.get_contents(g_config_file_dir + yaml_file_name)
+        return yaml.safe_load(contents.decoded_content)
+    except github.GithubException as err:
+        print('error occurred while obtaining the object')
+        exit(0)
 
 
-def zap_started():
-    print("hello world by niro custom hook")
-    print('token is' + os.environ['GITHUB_TOKEN'])
-    # print('repo is' + os.environ['GITHUB_REPOSITORY'])
+def generate_basic__alert_msg(alert_list, updated_list):
+    msg = 'The following new violations have been found during the ZAP scan' + NXT_LINE
+    for alert in alert_list:
+        msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
+                                                           alert['name'], NXT_LINE)
+
+    for alert in updated_list:
+        msg = msg + NXT_LINE + "The following alerts have been updated with the new ZAP Scan" + NXT_LINE
+        msg = msg + '{} Alert[{}] count({}): {} {}'.format(BULLET, alert['pluginid'], len(alert['instances']),
+                                                           alert['name'], NXT_LINE)
+        if 'iterable_item_added' in alert:
+            msg = msg + '{}{} Newly identified Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_added']),
+                                                                     NXT_LINE)
+        if update_issue_if_alert_resolved and 'iterable_item_removed' in alert:
+            msg = msg + '{}{} Resolved Issues: {} {}'.format(TAB, BULLET, len(alert['iterable_item_removed']), NXT_LINE)
+    repo = "https://github.com/" + GITHUB_REPOSITORY + '/blob/' + working_branch + '/' + g_config_file_dir + yaml_file_name
+    return msg + NXT_LINE + 'View the following following [file]({}) for complete report.'.format(repo)
 
 
-zap_started()
+def create_issue(title, msg):
+    return repo.create_issue(title=title, body=msg)
+
+
+def create_zap_yaml_file(yaml_file_name, data):
+    with open(yaml_file_name, 'w') as yaml_file:
+        yaml.dump(data, yaml_file, default_flow_style=False)
+
+
+def filter_report_json_data(alert_list):
+    f_list = []
+    for alert in alert_list:
+        f_list.append(
+            dict((key, value) for key, value in alert.items() if key in ('pluginid', 'name', 'riskdesc', 'instances')))
+    return f_list
+
+
+def get_g_file(dir_name, file_name, branch):
+    list_of_files = repo.get_dir_contents(dir_name, ref=branch)
+    return [element for element in list_of_files if element.name == file_name]
+
+
+# Fetch the auto generated report from ZAP
+with open('./report.json') as f:
+    try:
+        report_data = json.load(f)
+        # If no errors found in the report exit
+        if len(report_data['site'][0]['alerts']) == 0:
+            print('No errors found via the ZAP Scan')
+            exit(0)
+    except IOError as exc:
+        print('zap report does not exists', exc)
+        exit(0)
+    except json.JSONDecodeError as exc:
+        print('empty or invalid json report', exc)
+        exit(0)
+
+# Fetch the YAML file from the repository
+with open(yaml_file_name) as stream:
+    try:
+        yaml_config = yaml.safe_load(stream)
+        if not yaml_config:
+            create_new_issue = True
+        # If last issue is closed create a new issue
+        if yaml_config:
+            issue = repo.get_issue(number=yaml_config['issue'])
+            if issue.state == 'closed':
+                create_new_issue = True
+    except IOError as exc:
+        print('zap report does not exists', exc)
+        create_new_issue = True
+    except yaml.YAMLError as exc:
+        print('invalid YAML syntax, creating a new file and issue', exc)
+        create_new_issue = True
+        print(exc)
+
+
+def update_g_file(file_path, msg, content, branch, sha):
+    repo.update_file(file_path, msg, content, sha,
+                     branch=branch)
+
+
+def create_g_file(file_path, msg, content, branch):
+    repo.create_file(file_path, msg, content,
+                     branch=branch)
+
+
+# Create a new zap file and issue
+if create_new_issue:
+    r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
+    msg = generate_basic__alert_msg(r_alerts, [])
+    issue = create_issue('ZAP Scan Baseline Report', msg)
+    yaml_file = {'issue': issue.number, 'alert_list': r_alerts}
+    # TODO Remove after testing
+    create_zap_yaml_file(yaml_file_name, yaml_file)
+
+    g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
+    if g_config_file:
+        update_g_file(g_config_file[0].path, "Updating ZAP report", yaml.dump(yaml_file), working_branch,
+                      g_config_file[0].sha)
+    else:
+        create_g_file(g_config_file_dir + yaml_file_name, "Creating the ZAP report", yaml.dump(yaml_file),
+                      working_branch)
+    print('zap process completed successfully!')
+    exit(0)
+
+# Iterate and filter only the required files
+previous_alert_list = yaml_config['alert_list']
+for r_alert in report_data['site'][0]['alerts']:
+    # If not found in the existing vulnerabilities add it to new alerts
+    p_alert = [element for element in previous_alert_list if element['pluginid'] == r_alert['pluginid']]
+    if p_alert:
+        p_alert = p_alert[0]
+        diff = DeepDiff(r_alert['instances'], p_alert['instances'], ignore_order=True)
+        if not diff:
+            existingAlerts.append(p_alert)
+        if 'iterable_item_removed' in diff:
+            issue_resolved = True
+            p_alert['iterable_item_removed'] = diff['iterable_item_removed']
+        if 'iterable_item_added' in diff:
+            p_alert['iterable_item_added'] = diff['iterable_item_added']
+        updatedAlerts.append(p_alert)
+    else:
+        new_alerts.append(r_alert)
+
+if new_alerts or (updatedAlerts and update_issue_if_alert_resolved):
+    msg = generate_basic__alert_msg(new_alerts, updatedAlerts)
+    issue.create_comment(msg)
+
+    g_config_file = get_g_file(g_config_file_dir, yaml_file_name, working_branch)
+    yaml_file = {'issue': issue.number, 'alert_list': []}
+    yaml_file['alert_list'].append(new_alerts)
+    yaml_file['alert_list'].append(updatedAlerts)
+    r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
+    r_alerts = filter_report_json_data(report_data['site'][0]['alerts'])
+    if g_config_file:
+        g_config_file = g_config_file[0]
+        repo.update_file(g_config_file.path, "Updating ZAP report", yaml.dump(yaml_config), g_config_file.sha,
+                         branch=working_branch)
+    else:
+        repo.create_file(g_config_file_dir + yaml_file_name, "creating the zap report", yaml.dump(yaml_config),
+                         branch=working_branch)
+    print("process completed!")
+    exit(0)
+else:
+    print('No change has been observed')
+    exit(0)
+
+print('The files have been commited')

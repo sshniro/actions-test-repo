@@ -9,12 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -l
-      - run: pip install --upgrade pip github3.py
-      - run: pip3 install --upgrade pip github3.py
+      - run: pip install --upgrade pip PyGithub
+      - run: pip3 install --upgrade pip PyGithub
       - name: run custom script
         run: python3 /zap/wrk/custom.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YAML_FILE_NAME: zap_report.yaml
+          WORKING_BRANCH: master
       - name: run zap baseline scan
         run: zap-baseline.py -t https://example.com -x report_xml.xml --hook=/zap/wrk/.github/workflows/custom.py || echo 0
       - run: pwd && ls -l /zap/wrk/
