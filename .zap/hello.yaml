@@ -1,0 +1,404 @@
+'@version': 2.9.0
+'@generated': 'Sat, 29 Feb 2020 18:39:08'
+site:
+  - '@name': 'https://www.zaproxy.org'
+    '@host': www.zaproxy.org
+    '@port': '443'
+    '@ssl': 'true'
+    alerts:
+      - pluginid: '10098'
+        alert: Cross-Domain Misconfiguration
+        name: Cross-Domain Misconfiguration
+        riskcode: '2'
+        confidence: '2'
+        riskdesc: Medium (Medium)
+        desc: >-
+          <p>Web browser data loading may be possible, due to a Cross Origin
+          Resource Sharing (CORS) misconfiguration on the web server</p>
+        instances:
+          - uri: 'https://www.zaproxy.org/img/faq/supportAddonVersion.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/getting-started/images/browser-no-proxy.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/addons/websockets/images/105.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/images/fugue/forcedUserOff.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/addons/websockets/images/handshake.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/getting-started/images/alert-icons.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/150.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/071.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/141.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/094.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/getting-started/images/zap-full-screen.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/fugue/broom-alerts.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/addons/export-report/images/pdf.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/images/fugue/application-blue-export.png
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/076.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/main.7d9e3.css'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/118.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/096.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/img/faq/windows-settings-high-dpi.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+          - uri: 'https://www.zaproxy.org/docs/desktop/images/16/152.png'
+            method: GET
+            evidence: 'Access-Control-Allow-Origin: *'
+        count: '107'
+        solution: >-
+          <p>Ensure that sensitive data is not available in an unauthenticated
+          manner (using IP address white-listing, for instance).</p><p>Configure
+          the "Access-Control-Allow-Origin" HTTP header to a more restrictive
+          set of domains, or remove all CORS headers entirely, to allow the web
+          browser to enforce the Same Origin Policy (SOP) in a more restrictive
+          manner.</p>
+        otherinfo: >-
+          <p>The CORS misconfiguration on the web server permits cross-domain
+          read requests from arbitrary third party domains, using
+          unauthenticated APIs on this domain. Web browser implementations do
+          not permit arbitrary third parties to read the response from
+          authenticated APIs, however. This reduces the risk somewhat. This
+          misconfiguration could be used by an attacker to access data that is
+          available in an unauthenticated manner, but which uses some other form
+          of security, such as IP address white-listing.</p>
+        reference: >-
+          <p>http://www.hpenterprisesecurity.com/vulncat/en/vulncat/vb/html5_overly_permissive_cors_policy.html</p>
+        cweid: '264'
+        wascid: '14'
+        sourceid: '3'
+      - pluginid: '10038'
+        alert: Content Security Policy (CSP) Header Not Set
+        name: Content Security Policy (CSP) Header Not Set
+        riskcode: '1'
+        confidence: '2'
+        riskdesc: Low (Medium)
+        desc: >-
+          <p>Content Security Policy (CSP) is an added layer of security that
+          helps to detect and mitigate certain types of attacks, including Cross
+          Site Scripting (XSS) and data injection attacks. These attacks are
+          used for everything from data theft to site defacement or distribution
+          of malware. CSP provides a set of standard HTTP headers that allow
+          website owners to declare approved sources of content that browsers
+          should be allowed to load on that page — covered types are JavaScript,
+          CSS, HTML frames, fonts, images and embeddable objects such as Java
+          applets, ActiveX, audio and video files.</p>
+        instances:
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/port-scan/tab/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/start/features/alerts/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/revisit/'
+            method: GET
+          - uri: >-
+              https://www.zaproxy.org/faq/why-dont-you-rewrite-zap-in-my-favorite-language/
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/token-generator/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/tabs/callbacks/'
+            method: GET
+          - uri: >-
+              https://www.zaproxy.org/faq/how-can-i-use-the-zap-api-in-my-own-regression-tests/
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/releases/2.6.0/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/faq/where-can-i-ask-zap-related-questions/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/options/anticsrf/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/python-scripting/'
+            method: GET
+          - uri: >-
+              https://www.zaproxy.org/faq/why-am-i-getting-blank-zap-windows-on-linux/
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/windows-webdrivers/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/vulncheck/'
+            method: GET
+          - uri: >-
+              https://www.zaproxy.org/faq/what-should-i-do-if-zap-doesn-t-detect-a-known-problem/
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/addalert/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/options/keyboard/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/forced-browse/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/log-file-importer/'
+            method: GET
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/tabs/response/'
+            method: GET
+        count: '333'
+        solution: >-
+          <p>Ensure that your web server, application server, load balancer,
+          etc. is configured to set the Content-Security-Policy header, to
+          achieve optimal browser support: "Content-Security-Policy" for Chrome
+          25+, Firefox 23+ and Safari 7+, "X-Content-Security-Policy" for
+          Firefox 4.0+ and Internet Explorer 10+, and "X-WebKit-CSP" for Chrome
+          14+ and Safari 6+.</p>
+        reference: >-
+          <p>https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy</p><p>https://www.owasp.org/index.php/Content_Security_Policy</p><p>http://www.w3.org/TR/CSP/</p><p>http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html</p><p>http://www.html5rocks.com/en/tutorials/security/content-security-policy/</p><p>http://caniuse.com/#feat=contentsecuritypolicy</p><p>http://content-security-policy.com/</p>
+        cweid: '16'
+        wascid: '15'
+        sourceid: '3'
+      - pluginid: '10017'
+        alert: Cross-Domain JavaScript Source File Inclusion
+        name: Cross-Domain JavaScript Source File Inclusion
+        riskcode: '1'
+        confidence: '2'
+        riskdesc: Low (Medium)
+        desc: >-
+          <p>The page includes one or more script files from a third-party
+          domain.</p>
+        instances:
+          - uri: 'https://www.zaproxy.org/docs/desktop/start/features/api/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/releases/2.9.0/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/ui/dialogs/options/ascaninput/
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/faq/details/setting-up-zap-to-test-dvwa/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/openapi-support/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/start/features/globalexcludeurl/
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/save-xml-message/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/start/features/notes/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/start/features/modes/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/options/api/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/fuzzdb-web-backdoors/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/evangelists/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: >-
+              https://www.zaproxy.org/faq/what-vulnerability-classifications-are-supported/
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: >-
+              https://www.zaproxy.org/faq/why-has-the-quick-scan-attack-reported-an-invalid-url/
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/releases/2.2.1/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/faq/how-do-i-handle-a-false-positive/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/reveal/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/all-in-one-notes/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/addnote/'
+            method: GET
+            param: 'https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js'
+            evidence: >-
+              <script
+              src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js"></script>
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/ajax-spider/'
+            method: GET
+            param: 'https://www.googletagmanager.com/gtag/js?id=UA-71455536-1'
+            evidence: >-
+              <script async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-71455536-1"></script>
+        count: '659'
+        solution: >-
+          <p>Ensure JavaScript source files are loaded from only trusted
+          sources, and the sources can't be controlled by end users of the
+          application.</p>
+        reference: <p></p>
+        cweid: '829'
+        wascid: '15'
+        sourceid: '3'
+      - pluginid: '10096'
+        alert: Timestamp Disclosure - Unix
+        name: Timestamp Disclosure - Unix
+        riskcode: '0'
+        confidence: '1'
+        riskdesc: Informational (Low)
+        desc: <p>A timestamp was disclosed by the application/web server - Unix</p>
+        instances:
+          - uri: 'https://www.zaproxy.org/docs/desktop/releases/2.2.2/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/pdf/ZAPGettingStartedGuide-2.9.pdf'
+            method: GET
+            evidence: 0000284874
+          - uri: 'https://www.zaproxy.org/pdf/ZAPGettingStartedGuide-2.9.pdf'
+            method: GET
+            evidence: 0000410497
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/websockets/options/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/releases/2.3.0/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/tlmenu/online/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/evangelists/'
+            method: GET
+            evidence: '35974704'
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/import-urls/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/pdf/ZAPGettingStartedGuide-2.9.pdf'
+            method: GET
+            evidence: 0000540813
+          - uri: 'https://www.zaproxy.org/pdf/ZAPGettingStartedGuide-2.9.pdf'
+            method: GET
+            evidence: '0000540266'
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/addnote/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/start/features/intercept/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/advascan/'
+            method: GET
+            evidence: '71455536'
+          - uri: >-
+              https://www.zaproxy.org/docs/desktop/addons/websockets/sessionproperties/
+            method: GET
+            evidence: '71455536'
+          - uri: >-
+              https://www.zaproxy.org/faq/can-zap-be-used-to-test-my-favorite-framework-or-technology/
+            method: GET
+            evidence: '71455536'
+          - uri: >-
+              https://www.zaproxy.org/faq/how-do-you-find-out-what-key-to-use-to-set-a-config-value-on-the-command-line/
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/pdf/ZAPGettingStartedGuide-2.9.pdf'
+            method: GET
+            evidence: 0000539482
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/options/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/ui/dialogs/options/api/'
+            method: GET
+            evidence: '71455536'
+          - uri: 'https://www.zaproxy.org/docs/desktop/addons/fuzzer/locations/'
+            method: GET
+            evidence: '71455536'
+        count: '467'
+        solution: >-
+          <p>Manually confirm that the timestamp data is not sensitive, and that
+          the data cannot be aggregated to disclose exploitable patterns.</p>
+        otherinfo: '<p>71455536, which evaluates to: 1972-04-07 00:45:36</p>'
+        reference: >-
+          <p>https://www.owasp.org/index.php/Top_10_2013-A6-Sensitive_Data_Exposure</p><p>http://projects.webappsec.org/w/page/13246936/Information%20Leakage</p>
+        cweid: '200'
+        wascid: '13'
+        sourceid: '3'
